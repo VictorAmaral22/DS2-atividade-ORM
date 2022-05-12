@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Cadastro</title>
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/home.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+    <header>
+        <div id="header-title">
+            <h1>CHAT.COM</h1>
+        </div>
+    </header>
+
+    <div style="display: block; margin-top: 10%;">
+        <div id='id01' class="w3-modal-content" style="display: block; background-color: white;padding: 20px;">
+            <div id="modal">
+                <div id="column">
+                    <p id="loginP">Login</p>
+                    <form action="/users/login" method="post">
+                        <input
+                            class="w3-input w3-border w3-margin-bottom"
+                            placeholder="Email:"
+                            name="email"/>
+                        <input
+                            class="w3-input w3-border w3-margin-bottom"
+                            placeholder="Senha:"
+                            name="senha"
+                            type="password"/>
+                        <button class="w3-button w3-block w3-section w3-padding" style="background-color: #4745C0; color: white;" type="submit">Logar</button>
+                    </form>
+                    <button
+                        class="w3-button w3-block w3-section w3-padding"
+                        id="criarCadastro"
+                        onclick="document.getElementById('id01').style.display='none';document.getElementById('id02').style.display='block'">Criar cadastro</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div id="id02" class="w3-modal-content" style="display: none; background-color: white; padding: 20px;">
+            <div id="modal">
+                <span
+                    onclick="document.getElementById('id01').style.display='block';document.getElementById('id02').style.display='none'"
+                    class="w3-button w3-display-topright">&times;</span>
+                <div id="column">
+                    <p id="loginP">Cadastrar</p>
+                    <form action="/users/cadastrar" method="post">
+                        <input
+                            class="w3-input w3-border w3-margin-bottom"
+                            placeholder="Nome:"
+                            name="nome"/>
+                        <input
+                            class="w3-input w3-border w3-margin-bottom"
+                            placeholder="Imagem:"
+                            name="imagem"/>
+                        <input
+                            class="w3-input w3-border w3-margin-bottom"
+                            placeholder="Email:"
+                            name="email"/>
+                        <input
+                            class="w3-input w3-border w3-margin-bottom"
+                            placeholder="Senha:"
+                            name="senha"
+                            type="password"/>
+                        <button class="w3-button w3-block w3-section w3-padding" style="background-color: #4745C0; color: white;" type="submit">Criar Conta</button>
+                    </form>
+                    <button
+                        class="w3-button w3-block w3-section w3-padding"
+                        id="criarCadastro"
+                        onclick="document.getElementById('id01').style.display='block';document.getElementById('id02').style.display='none'">Fazer login</button>
+                </div>
+            </div>
+        </div>
+        <br><br>
+        <footer align="center">
+            Feito por Victor Amaral & Sílvio Quintana
+        </footer>
+</body>
+</html>

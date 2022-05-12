@@ -1,0 +1,15 @@
+Crie uma aplicação NodeJS que gerencie publicações de usuários
+
+    a. GET / → página inicial do sistema, com o nome do aluno que desenvolveu
+    (você) e os últimos (5) posts cadastrados.
+    b. GET /posts → página com os posts por ordem cronológica inversa,
+    paginado de 10 em 10 posts.
+    i. Permitir filtragem por datas
+    ii. Permitir filtragem por autor
+    c. POST /posts → rota para a inserção de um novo post, redirecionando para a
+    página do próprio post, armazenar a data de criação, usuário que publicou o
+    post. Um post pode ter múltiplas imagens.
+    d. GET /posts/id → página com os detalhes / texto do post, botão para excluir
+    ou para levar para a página de edição
+    e. POST /posts/id → permite atualizar os dados de um post
+    f. DELETE /posts/id → remove um post da lista

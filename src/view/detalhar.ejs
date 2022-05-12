@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('includes/head') %>
+    <link rel="stylesheet" href="/css/detalhar.css">
+
+<body>
+
+    <%- include('includes/navbar') %>    
+
+    <main id="containerGrid">
+        <div id="gridGroup">
+          <h3 style="margin-left: 5%;">Seus grupos</h3>
+          <div id="scrollGroup">
+            
+            <% if (grupos) { %>
+                <% grupos.map(item=> { %>
+                    <a href="/grupos/<%= item.grupoid %>/1" onmouseenter="showName('<%= item.grupoid %>')" onmouseleave="hideName('<%= item.grupoid %>')">
+                        <div id="alignCenter" style="margin-top: 30px; cursor: pointer;">
+                            <% if (grupo.id == item.grupoid) { %>
+                                <div style="margin-left: 5%; background-image: url('<%- item.imagem %>');"
+                                class="imageGroup-<% item.id %> selectedGroup" id="imageGroup">
+                                </div>
+                            <% } else { %>
+                                    <div style="margin-left: 5%; background-image: url('<%- item.imagem %>');"
+                                    class="imageGroup-<% item.id %>" id="imageGroup">
+                                    </div>
+                            <% } %>
+                                    
+                        </div>
+                        <p id="groupName<%= item.grupoid %>" style="display: none; background-color: rgba(0, 0, 0, 0.8); border-radius: 5px; margin-left: 5px; padding: 10px; padding-left: 20px; padding-right: 20px;">
+                            <%= item.nome %>
+                            <br>
+                            <%= item.qtdusers %> - Membros
+                        </p>
+                    </a>
+                <% }); %>
+            <% } %>
+        </div>
+          <% if (grupo.admin === user.id) { %>
+            <div onclick="document.getElementById('id02').style.display='block'" id="CreateGroup">Editar Grupo</div>
+            <form action="/grupos/<%= grupo.id %>/deleteGroup" class="buttonform" method="post">
+                <button type="submit" id="CreateGroup">Deletar Grupo</button>
+            </form>
+            <% } %>
+          <div onclick="document.getElementById('id02').style.display='block'" id="CreateGroup">Criar Grupo</div>
+        </div>
+        <div id="gridChat">
+            <div class="groupHeaders">
+                <p class="GroupName"><%= grupo.nome %></p>
+                <div onclick="if(document.getElementById('gridParticipantes').style.display=='block') document.getElementById('gridParticipantes').style.display='none';else document.getElementById('gridParticipantes').style.display='block'"><p>Abrir e Fechar participantes</p></div>
+            </div>
+
+            <div class="groupMensagens">
+                <div id="scrollMessagens">
+                    <% if(proxPaginas > page) { %>
+                        <div class="linkPaginationWrapper">
+                            <a href="<%= parseInt(page)+1 %>" class="linkPagination">Ver mais antigas</a>
+                        </div>
+                    <% } %>
+                    <% if (mensagens.length > 0) { %>
+                        <% mensagens.reverse().map(item=> { %>
+                                <% if(item.isnotification) {  %>
+                                    <div class="linkPaginationWrapper">
+                                        <p class="notificationText"><%= item.texto %></p>
+                                    </div>
+                                <% } else {  %>
+                                    <% if(user.id !== item.user) {  %>
+                                        <div class="mensageContainer">
+                                            <!-- id = unico do html -->
+                                            <!-- class = coleçao de itens no html -->
+                                            <div class="MessagesIsntOwner">
+                                                <div class="MessagePhoto" style="background-image: url('<%= item.imagem %>'); background-position: center; background-size: cover; border-radius: 50px; "></div>
+                                                <p class="MessagePhotoName"><%= item.nome %> </p>
+                                                <p class="time">  <%= item.data.getHours(); %>:<%= item.data.getMinutes(); %> - <%= item.data.getUTCDate(); %>/<%= item.data.getUTCMonth()+1 %>/<%= item.data.getFullYear(); %></p>
+                                            </div>
+                                            <p class="message"><%= item.texto %></p>
+                                        </div>
+                                    <% }; %>
+        
+                                    <% if(user.id == item.user) {  %>
+                                        <div class="mensageContainer owner">
+                                            <p class="message"><%= item.texto %></p>
+                                            <div class="MessagesOwner">
+                                                <p class="time">  <%= item.data.getHours(); %>:<%= item.data.getMinutes(); %> - <%= item.data.getUTCDate(); %>/<%= item.data.getUTCMonth()+1 %>/<%= item.data.getFullYear(); %></p>
+                                            </div>
+                                        </div>
+                                    <% }; %>    
+                                <% } %>
+                        <% }); %>
+                    <% }  else { %>
+                        <div class="noMessages">
+                            <p align="center">Não foram postadas mensagens!</p>
+                        </div>
+                    <% } %>
+                    <% if(page > 1) { %>
+                        <div class="linkPaginationWrapper">
+                            <a href="<%= parseInt(page)-1 %>" class="linkPagination">Ver mais novas</a>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+
+            <%  if(participantes.find(item => item.userid == user.id).tipo === 2 || participantes.find(item => item.userid == user.id).tipo === 1) { %>
+                <form action="/grupos/<%= grupo.id %>/enviarMensagem" method="post" class="messageInputContainer">
+                    <input id="input" name="mensagem" placeholder="Como você está se sentindo" maxlength="1000">
+                    <button type="submit" style="margin-right: 10px; align-items: center;">
+                        <img src="/assets/Arrow-right.svg" style="height: 30px; width: 30px; cursor: pointer;">
+                    </button>
+                </form>
+            <% } %>
+        </div>
+        <div style="display: block;" id="gridParticipantes">
+            <div id="scrollMembers">
+            <% if (participantes) { %>
+                <% if(participantes.filter(item => item.tipo == 1).length > 0) {%>
+                    <h2>Admin</h2>
+                <% } %>
+                <% participantes.map(item => { %>
+                    <% if(item.tipo == 1) { %>
+                        <div class="participantContainer">
+                            <div class="participantInfo">
+                                <div class="participantImg" style="background-image: url('<%= item.imagem %>'); "></div>
+                                <p class="participantName"><%= item.nome %></p>
+                            </div>
+                        </div>
+                    <% } %>
+                <% }) %>
+
+                <% if(participantes.filter(item => item.tipo == 2).length > 0) {%>
+                    <h2>Editores</h2>
+                <% } %>
+                <% participantes.map(item => { %>
+                    <% if(item.tipo == 2) { %>
+                        <div class="participantContainer">
+                            <div class="participantInfo">
+                                <div class="participantImg" style="background-image: url('<%= item.imagem %>'); "></div>
+                                <p class="participantName"><%= item.nome %></p>
+                            </div>
+                            <% if(grupo.admin == user.id) { %>
+                                <form action="/grupos/<%= grupo.id %>/removeMember" method="post">
+                                    <button class="buttonRemove" name="userId" value="<%= item.userid %>" type="submit">X</button>
+                                </form>
+                            <% } %>
+                        </div>
+                    <% } %>
+                <% }) %>
+
+                <% if(participantes.filter(item => item.tipo == 3).length > 0) {%>
+                    <h2>Viewers</h2>
+                <% } %>
+                <% participantes.map(item => { %>
+                    <% if(item.tipo == 3) { %>
+                        <div class="participantContainer">
+                            <div class="participantInfo">
+                                <div class="participantImg" style="background-image: url('<%= item.imagem %>'); "></div>
+                                <p class="participantName"><%= item.nome %></p>
+                            </div>
+                            <% if(grupo.admin == user.id) { %>
+                                <form action="/grupos/<%= grupo.id %>/removeMember" method="post">
+                                    <button class="buttonRemove" name="userId" value="<%= item.userid %>" type="submit">X</button>
+                                </form>
+                            <% } %>
+                        </div>
+                    <% } %>
+                <% }) %>
+            <% } %>
+            </div>
+            <% if (grupo.admin === user.id) { %>
+                <div onclick="document.getElementById('id01').style.display='block'" id="CreateGroup">Adicionar membro</div>
+            <% } %>
+            <% if (grupo.admin !== user.id) { %>
+                <form action="/grupos/<%= grupo.id %>/exitGroup" method="post">
+                <button id="CreateGroup" name="userId" value="<%= user.id %>" type="submit">Sair do Grupo</button>
+            <% } %>
+        </div>
+
+        <%- include('includes/modalGroup') %>
+        <%- include('includes/modalAddMember') %>   
+    </main>
+
+      <script>
+        var objDiv = document.getElementById("scrollMessagens");
+        objDiv.scrollTop = objDiv.scrollHeight;
+
+        function showName (id) {
+            let element = document.getElementById('groupName'+id);
+            element.style.display = 'flex';
+        }
+
+        function hideName (id) {
+            let element = document.getElementById('groupName'+id);
+            element.style.display = 'none';
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const myParam = urlParams.get('error');
+        if(myParam == 'user-not-found') alert('Usuário não existe!');
+      </script>
+</body>
+</html>

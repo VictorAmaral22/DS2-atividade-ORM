@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('includes/head') %>
+  <link rel="stylesheet" href="/css/listagem.css">
+
+  <body>
+
+    <%- include('includes/navbar') %>
+      <main id="containerGrid">
+        <div id="gridGroup">
+          <h3 style="margin-left: 5%;">Seus grupos</h3>
+          <div id="scrollGroup">
+            <% if (grupos) { %>
+                <% grupos.map(item=> { %>
+                    <a href="/grupos/<%= item.grupoid %>/1" onmouseenter="showName('<%= item.grupoid %>')" onmouseleave="hideName('<%= item.grupoid %>')">
+                        <div id="alignCenter" style="margin-top: 30px; cursor: pointer;">
+                          <div style="margin-left: 5%; background-image: url('<%- item.imagem %>');" class="imageGroup-<% item.id %>" id="imageGroup"></div>                                    
+                        </div>
+                        <p id="groupName<%= item.grupoid %>" style="display: none; background-color: rgba(0, 0, 0, 0.8); border-radius: 5px; margin-left: 5px; padding: 10px; padding-left: 20px; padding-right: 20px;">
+                            <%= item.nome %>
+                            <br>
+                            <%= item.qtdusers %> - Membros
+                        </p>
+                    </a>
+                <% }); %>
+            <% } %>
+        </div>
+          <div onclick="document.getElementById('id02').style.display='block'" id="CreateGroup">Criar Grupo</div>
+        </div>
+        <div id="gridChat">
+            <img src="/assets/chatIcon.svg" id="ChatImage">
+            <p id="chatText">Escolha um grupo para conversar, ou crie um novo!</p>
+        </div>
+      </main>
+
+      <%- include('includes/modalGroup') %>
+      <script>
+        var objDiv = document.getElementById("scrollMessagens");
+        objDiv.scrollTop = objDiv.scrollHeight;
+
+        function showName (id) {
+            let element = document.getElementById('groupName'+id);
+            element.style.display = 'flex';
+        }
+
+        function hideName (id) {
+            let element = document.getElementById('groupName'+id);
+            element.style.display = 'none';
+        }
+      </script>
+  </body>
+
+</html>

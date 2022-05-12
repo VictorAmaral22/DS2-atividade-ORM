@@ -1,0 +1,18 @@
+<div id="id02" class="w3-modal">
+    <div class="w3-modal-content" style="background-color: white; padding: 20px;">
+        <div id="modal">
+            <span
+                onclick="document.getElementById('id02').style.display='none'"
+                class="w3-button w3-display-topright">&times;</span>
+            <div id="column">
+                <p id="loginP">Criar Grupo</p>
+                <form action="/grupos/cadastrar" method="post">
+                    <input class="w3-input w3-border w3-margin-bottom" placeholder="Nome:" name="nome" />
+                    <input class="w3-input w3-border w3-margin-bottom" placeholder="Imagem:" name="imagem" />
+                    <button class="w3-button w3-block w3-section w3-padding"
+                        style="background-color: #4745C0; color: white;" type="submit">Criar Grupo</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

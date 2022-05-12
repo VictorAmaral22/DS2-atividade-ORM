@@ -1,0 +1,22 @@
+<div id="id01" class="w3-modal">
+    <div class="w3-modal-content" style="background-color: white; padding: 20px;">
+        <div id="modal">
+            <span
+                onclick="document.getElementById('id01').style.display='none'"
+                class="w3-button w3-display-topright">&times;</span>
+            <div id="column">
+                <p id="loginP">Adicionar Membro</p>
+                <form action="/grupos/<%= grupo.id %>/addMember" method="post">
+                    <input class="w3-input w3-border w3-margin-bottom" placeholder="email:" name="email" />
+                    <select name="tipo" id="">
+                        <option value="2">Editor</option>
+                        <option value="3">Viewers</option>
+                    </select>
+                    <input hidden name="grupo" value="1" />
+                    <button class="w3-button w3-block w3-section w3-padding"
+                        style="background-color: #4745C0; color: white;" type="submit">Adicionar membro</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
